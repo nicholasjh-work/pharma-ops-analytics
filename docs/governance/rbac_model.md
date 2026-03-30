@@ -81,18 +81,34 @@ CREATE OR REPLACE ROW ACCESS POLICY partner_ta_filter AS
   )
 ```
 
-### Supabase (Row-Level Security)
+### BigQuery (Row-Level Security)
 ```sql
--- Enable RLS
-ALTER TABLE marts.mart_manufacturer_performance_report ENABLE ROW LEVEL SECURITY;
-
--- Policy for partner access
-CREATE POLICY partner_access ON marts.mart_manufacturer_performance_report
-  FOR SELECT
-  USING (
+-- Create row access policy
+CREATE ROW ACCESS POLICY partner_filter
+  ON `pharma_ops.mart_manufacturer_performance_report`
+  GRANT TO ("group:partner_manufacturer@company.com")
+  FILTER USING (
     therapeutic_area IN (
-      SELECT ta FROM partner_assignments
-      WHERE partner_user_id = auth.uid()
+      SELECT ta FROM `pharma_ops.partner_assignments`
+      WHERE partner_email = SESSION_USER()
     )
   );
+```
+
+### Databricks (Unity Catalog Row Filters)
+```sql
+-- Create row filter function
+CREATE FUNCTION pharma_ops.partner_row_filter(therapeutic_area STRING)
+  RETURN IF(
+    IS_ACCOUNT_GROUP_MEMBER('partner_manufacturer'),
+    therapeutic_area IN (
+      SELECT ta FROM pharma_ops.partner_assignments
+      WHERE partner_id = CURRENT_USER()
+    ),
+    TRUE  -- non-partner roles see all rows
+  );
+
+-- Apply to table
+ALTER TABLE pharma_ops.mart_manufacturer_performance_report
+  SET ROW FILTER pharma_ops.partner_row_filter ON (therapeutic_area);
 ```

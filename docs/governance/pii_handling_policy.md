@@ -38,7 +38,7 @@ data (e.g., at a company like Gifthealth), the following controls apply:
 ### HIPAA Compliance Requirements
 
 1. **Business Associate Agreements (BAAs)**
-   - Required with all cloud vendors (Snowflake, AWS/GCP, Supabase)
+   - Required with all cloud vendors (Snowflake, BigQuery, Databricks)
    - Required with any BI tool vendor processing PHI
    - BAA must be executed before any data transfer
 

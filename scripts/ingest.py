@@ -2,11 +2,10 @@
 CMS Medicare Part D Data Ingestion Pipeline
 
 Downloads real CMS public use files, filters to pharmacy-relevant
-therapeutic areas, and loads into PostgreSQL (local or Supabase).
+therapeutic areas, and loads into PostgreSQL (local, Snowflake, BigQuery, or Databricks).
 
 Usage:
     python scripts/ingest.py --target local
-    python scripts/ingest.py --target supabase
     python scripts/ingest.py --download-only
 
 Data sources (all public, no auth required):
@@ -211,28 +210,80 @@ def get_engine(target: str) -> sa.Engine:
     """Create SQLAlchemy engine for the chosen target."""
     if target == "local":
         host = os.getenv("PG_HOST", "localhost")
-        user = os.getenv("PG_USER", "demo_user")
+        user = os.getenv("PG_USER", "nickhidalgo")
         password = os.getenv("PG_PASSWORD", "")
-        url = f"postgresql://{user}:{password}@{host}:5432/pharma_ops"
-    elif target == "supabase":
-        host = os.getenv("SUPABASE_HOST")
-        user = os.getenv("SUPABASE_USER", "postgres")
-        password = os.getenv("SUPABASE_PASSWORD")
-        if not host or not password:
-            log.error("SUPABASE_HOST and SUPABASE_PASSWORD must be set in .env")
+        dbname = os.getenv("PG_DATABASE", "pharma_ops")
+        url = f"postgresql://{user}:{password}@{host}:5432/{dbname}"
+        return sa.create_engine(url, echo=False)
+
+    elif target == "snowflake":
+        account = os.getenv("SNOWFLAKE_ACCOUNT")
+        user = os.getenv("SNOWFLAKE_USER")
+        password = os.getenv("SNOWFLAKE_PASSWORD")
+        warehouse = os.getenv("SNOWFLAKE_WAREHOUSE", "COMPUTE_WH")
+        database = os.getenv("SNOWFLAKE_DATABASE", "PHARMA_OPS")
+        schema = os.getenv("SNOWFLAKE_SCHEMA", "PUBLIC")
+        role = os.getenv("SNOWFLAKE_ROLE", "ACCOUNTADMIN")
+        if not account or not user or not password:
+            log.error("SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, and SNOWFLAKE_PASSWORD must be set in .env")
             sys.exit(1)
-        url = f"postgresql://{user}:{password}@{host}:5432/postgres"
+        url = (
+            f"snowflake://{user}:{password}@{account}/"
+            f"{database}/{schema}?warehouse={warehouse}&role={role}"
+        )
+        return sa.create_engine(url, echo=False)
+
+    elif target == "bigquery":
+        # BigQuery uses the bigquery:// dialect via sqlalchemy-bigquery
+        project = os.getenv("BIGQUERY_PROJECT")
+        dataset = os.getenv("BIGQUERY_DATASET", "pharma_ops")
+        keyfile = os.getenv("BIGQUERY_KEYFILE")
+        if not project or not keyfile:
+            log.error("BIGQUERY_PROJECT and BIGQUERY_KEYFILE must be set in .env")
+            sys.exit(1)
+        from google.oauth2 import service_account
+        credentials = service_account.Credentials.from_service_account_file(keyfile)
+        url = f"bigquery://{project}/{dataset}"
+        return sa.create_engine(url, credentials_path=keyfile, echo=False)
+
+    elif target == "databricks":
+        host = os.getenv("DATABRICKS_HOST")
+        http_path = os.getenv("DATABRICKS_HTTP_PATH")
+        token = os.getenv("DATABRICKS_TOKEN")
+        catalog = os.getenv("DATABRICKS_CATALOG", "main")
+        schema = os.getenv("DATABRICKS_SCHEMA", "pharma_ops")
+        if not host or not http_path or not token:
+            log.error("DATABRICKS_HOST, DATABRICKS_HTTP_PATH, and DATABRICKS_TOKEN must be set in .env")
+            sys.exit(1)
+        # Strip https:// from host if present
+        host_clean = host.replace("https://", "").replace("http://", "")
+        url = (
+            f"databricks://token:{token}@{host_clean}"
+            f"?http_path={http_path}&catalog={catalog}&schema={schema}"
+        )
+        return sa.create_engine(url, echo=False)
+
     else:
         log.error(f"Unknown target: {target}")
         sys.exit(1)
 
-    return sa.create_engine(url, echo=False)
 
-
-def load_to_postgres(df: pd.DataFrame, table: str, engine: sa.Engine) -> None:
-    """Load a DataFrame into PostgreSQL, replacing existing data."""
+def load_to_database(df: pd.DataFrame, table: str, engine: sa.Engine, target: str) -> None:
+    """Load a DataFrame into the target database, replacing existing data."""
     log.info(f"  Loading {len(df):,} rows into {table}...")
-    df.to_sql(table, engine, if_exists="replace", index=False, method="multi", chunksize=5000)
+
+    if target == "bigquery":
+        # BigQuery needs explicit dtype mapping for large integers
+        df.to_sql(table, engine, if_exists="replace", index=False, chunksize=10000)
+    elif target == "snowflake":
+        # Snowflake performs better with larger chunks
+        df.to_sql(table, engine, if_exists="replace", index=False, method="multi", chunksize=10000)
+    elif target == "databricks":
+        df.to_sql(table, engine, if_exists="replace", index=False, chunksize=5000)
+    else:
+        # PostgreSQL
+        df.to_sql(table, engine, if_exists="replace", index=False, method="multi", chunksize=5000)
+
     log.info(f"  Done: {table}")
 
 
@@ -277,16 +328,24 @@ def main(target: Optional[str] = None, download_only: bool = False) -> None:
     df_prescribers_drug.to_csv(PROCESSED_DIR / "prescribers_drug_processed.csv", index=False)
     log.info("Processed CSVs saved to data/processed/")
 
-    # Step 4: Load into PostgreSQL
+    # Step 4: Load into target database
     if target:
         log.info("=" * 60)
-        log.info(f"STEP 4: Load into PostgreSQL ({target})")
+        log.info(f"STEP 4: Load into {target}")
         log.info("=" * 60)
+
+        if target == "snowflake":
+            log.info("  Tip: For 25M+ rows, use Snowflake COPY INTO from S3 stage instead.")
+            log.info("  See docs/platform_notes.md for bulk loading instructions.")
+        if target == "databricks":
+            log.info("  Tip: For large datasets, use Databricks COPY INTO from cloud storage.")
+            log.info("  See docs/platform_notes.md for Unity Catalog loading instructions.")
+
         engine = get_engine(target)
 
-        load_to_postgres(df_spending, "raw_part_d_spending", engine)
-        load_to_postgres(df_prescribers, "raw_prescribers", engine)
-        load_to_postgres(df_prescribers_drug, "raw_prescribers_drug", engine)
+        load_to_database(df_spending, "raw_part_d_spending", engine, target)
+        load_to_database(df_prescribers, "raw_prescribers", engine, target)
+        load_to_database(df_prescribers_drug, "raw_prescribers_drug", engine, target)
 
         log.info("All tables loaded.")
     else:
@@ -303,9 +362,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="CMS Medicare Part D data ingestion")
     parser.add_argument(
         "--target",
-        choices=["local", "supabase"],
+        choices=["local", "snowflake", "bigquery", "databricks"],
         default=None,
-        help="Database target for loading",
+        help="Database target: local (PostgreSQL), snowflake, bigquery, or databricks",
     )
     parser.add_argument(
         "--download-only",

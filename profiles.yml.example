@@ -1,37 +1,65 @@
 # Copy to ~/.dbt/profiles.yml and fill in credentials.
-# Two targets provided: local PostgreSQL and Snowflake.
+# Four targets: local PostgreSQL, Snowflake, BigQuery, Databricks.
+# Switch active target by changing the 'target' value below.
+#
+# dbt adapter install (pick one or all):
+#   pip install dbt-postgres
+#   pip install dbt-snowflake
+#   pip install dbt-bigquery
+#   pip install dbt-databricks
 
 pharma_ops:
-  target: dev_postgres
+  target: dev_postgres  # change to: snowflake | bigquery | databricks
 
   outputs:
+
+    # ── Local PostgreSQL ──────────────────────────────────────
     dev_postgres:
       type: postgres
       host: "{{ env_var('PG_HOST', 'localhost') }}"
       port: 5432
-      user: "{{ env_var('PG_USER', 'demo_user') }}"
+      user: "{{ env_var('PG_USER', 'nickhidalgo') }}"
       pass: "{{ env_var('PG_PASSWORD', '') }}"
-      dbname: pharma_ops
+      dbname: "{{ env_var('PG_DATABASE', 'pharma_ops') }}"
       schema: public
       threads: 4
 
-    dev_supabase:
-      type: postgres
-      host: "{{ env_var('SUPABASE_HOST') }}"
-      port: 5432
-      user: "{{ env_var('SUPABASE_USER', 'postgres') }}"
-      pass: "{{ env_var('SUPABASE_PASSWORD') }}"
-      dbname: postgres
-      schema: public
-      threads: 4
-
-    prod_snowflake:
+    # ── Snowflake ─────────────────────────────────────────────
+    # Free trial: https://signup.snowflake.com ($400 credit, 30 days)
+    snowflake:
       type: snowflake
       account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
       user: "{{ env_var('SNOWFLAKE_USER') }}"
       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
-      role: ANALYST
-      database: PHARMA_OPS
-      warehouse: COMPUTE_WH
-      schema: public
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'ACCOUNTADMIN') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'PHARMA_OPS') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'COMPUTE_WH') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'PUBLIC') }}"
       threads: 8
+
+    # ── Google BigQuery ───────────────────────────────────────
+    # Free tier: 1 TB/month queries, 10 GB storage
+    # Requires: pip install dbt-bigquery
+    # Auth: service account JSON keyfile
+    bigquery:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('BIGQUERY_PROJECT') }}"
+      dataset: "{{ env_var('BIGQUERY_DATASET', 'pharma_ops') }}"
+      keyfile: "{{ env_var('BIGQUERY_KEYFILE') }}"
+      threads: 8
+      location: US
+      timeout_seconds: 300
+      retries: 3
+
+    # ── Databricks ────────────────────────────────────────────
+    # Community Edition or workspace trial
+    # Requires: pip install dbt-databricks
+    databricks:
+      type: databricks
+      host: "{{ env_var('DATABRICKS_HOST') }}"
+      http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      catalog: "{{ env_var('DATABRICKS_CATALOG', 'main') }}"
+      schema: "{{ env_var('DATABRICKS_SCHEMA', 'pharma_ops') }}"
+      threads: 4

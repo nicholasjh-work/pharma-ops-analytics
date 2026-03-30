@@ -17,9 +17,8 @@ Authentication: OAuth 2.0 (preferred) or Username/Password
 Role: analyst_commercial | analyst_pharmacy_ops | viewer_executive
 ```
 
-### PostgreSQL (Development / Supabase)
+### PostgreSQL (Development)
 ```
-Server: <supabase-host>.supabase.co
 Port: 5432
 Database: postgres
 Schema: public

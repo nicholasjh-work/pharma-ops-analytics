@@ -44,14 +44,14 @@ CMS Public Data (CSV)
 Python Ingestion (scripts/ingest.py)
     │  Download, validate, filter, load
     ▼
-PostgreSQL / Supabase (raw layer)
+Data Warehouse (PostgreSQL · Snowflake · BigQuery · Databricks)
     │
     ▼
 dbt (staging → intermediate → marts)
     │  20+ models, tests, snapshots, docs
     ▼
 React Dashboard (6 pages)
-    │  Recharts, Supabase client
+    │  Recharts, REST API
     ▼
 Vercel + Cloudflare (pharma-ops.nicholashidalgo.com)
 ```
@@ -89,7 +89,7 @@ All data is real and publicly available from CMS (data.cms.gov). No synthetic or
 ### Governance
 
 - **KPI Dictionary** (`docs/governance/kpi_dictionary.md`) — every metric with formula, grain, exclusions, and owner
-- **RBAC Model** (`docs/governance/rbac_model.md`) — role definitions with Snowflake, Power BI, and Supabase RLS examples
+- **RBAC Model** (`docs/governance/rbac_model.md`) — role definitions with Snowflake, Power BI, BigQuery, and Databricks RLS examples
 - **PII Handling Policy** (`docs/governance/pii_handling_policy.md`) — data classification, HIPAA adaptation guide, retention schedule
 
 ### BI Tool Integration
@@ -127,12 +127,16 @@ cp .env.example .env
 # Download CMS data (~2 GB total, cached after first run)
 python scripts/ingest.py --download-only
 
-# Load into PostgreSQL
-python scripts/ingest.py --target local
+# Load into your target warehouse
+python scripts/ingest.py --target local        # PostgreSQL
+python scripts/ingest.py --target snowflake    # Snowflake
+python scripts/ingest.py --target bigquery     # BigQuery
+python scripts/ingest.py --target databricks   # Databricks
 
-# dbt
-pip install dbt-postgres  # or dbt-snowflake
+# dbt (install the adapter for your target)
+pip install dbt-postgres     # or dbt-snowflake, dbt-bigquery, dbt-databricks
 cp profiles.yml.example ~/.dbt/profiles.yml
+# Edit profiles.yml: set target to your warehouse
 dbt deps
 dbt seed
 dbt run
@@ -140,20 +144,16 @@ dbt test
 dbt docs generate && dbt docs serve
 ```
 
-### Snowflake Deployment Notes
+### Supported Data Warehouses
 
-This project runs on PostgreSQL locally and Supabase in production. The dbt models are Snowflake-compatible with minimal changes:
+This project runs on four warehouse targets with the same dbt models. See [`docs/platform_notes.md`](docs/platform_notes.md) for detailed setup, bulk loading, and SQL compatibility notes per platform.
 
-1. Replace `profiles.yml` target with the `prod_snowflake` output
-2. `dbt_utils.generate_surrogate_key` works on both Snowflake and PostgreSQL adapters
-3. Timestamps: replace `current_timestamp` with `current_timestamp()` in Snowflake
-4. String functions (`lower()`, `trim()`, `replace()`) are cross-compatible
-5. `array_agg` syntax in `mart_therapeutic_area_kpis` needs Snowflake variant: `ARRAY_AGG(generic_name) WITHIN GROUP (ORDER BY total_spending DESC)[0]`
-6. For full-scale deployment (25M+ row prescriber-drug dataset):
-   - Use `COPY INTO` from S3/GCS stage for bulk loading
-   - Cluster mart tables on `(drug_year, therapeutic_area)` for query performance
-   - Set warehouse to `MEDIUM` for initial load, `XSMALL` for incremental and dashboard queries
-   - Enable auto-suspend at 60 seconds for cost management
+| Platform | Adapter | Free Tier | Best For |
+|---|---|---|---|
+| **PostgreSQL** | dbt-postgres | Local (free) | Development, testing |
+| **Snowflake** | dbt-snowflake | 30-day trial ($400 credit) | Production analytics, warehouse sizing demos |
+| **BigQuery** | dbt-bigquery | 1 TB/month queries, 10 GB storage | Cost-per-query workloads, GCP integration |
+| **Databricks** | dbt-databricks | Community Edition (permanent) | Unity Catalog, Delta Lake, notebook workflows |
 
 ### Project Structure
 
@@ -176,7 +176,8 @@ pharma-ops-analytics/
 ├── macros/                        # Reusable SQL (small-cell suppression)
 ├── docs/
 │   ├── governance/                # KPI dictionary, RBAC, PII policy
-│   └── bi_connections/            # LookML model, Tableau spec
+│   ├── bi_connections/            # LookML model, Tableau spec
+│   └── platform_notes.md         # Snowflake, BigQuery, Databricks setup
 ├── dashboard/                     # React + TypeScript frontend
 └── assets/                        # NH logo (dark/light SVG)
 ```
