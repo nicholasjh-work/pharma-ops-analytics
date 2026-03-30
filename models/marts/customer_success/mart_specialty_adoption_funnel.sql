@@ -62,7 +62,7 @@ with_rates as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['drug_year', 'prescriber_specialty', 'therapeutic_area']) }}
+    {{ dbt_utils.generate_surrogate_key(['drug_year', 'prescriber_specialty', 'therapeutic_area', 'is_gifthealth_focus']) }}
         as adoption_key,
     *,
     current_timestamp as _loaded_at

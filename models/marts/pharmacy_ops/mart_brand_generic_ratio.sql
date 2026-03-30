@@ -77,7 +77,7 @@ with_ratios as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['drug_year', 'therapeutic_area', 'state']) }}
+    {{ dbt_utils.generate_surrogate_key(['drug_year', 'therapeutic_area', 'state', 'is_gifthealth_focus']) }}
         as brand_generic_key,
     *,
     current_timestamp as _loaded_at

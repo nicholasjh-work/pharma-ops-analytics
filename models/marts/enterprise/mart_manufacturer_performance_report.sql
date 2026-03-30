@@ -58,7 +58,7 @@ manufacturer_report as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['drug_year', 'generic_name', 'brand_name']) }}
+    {{ dbt_utils.generate_surrogate_key(['drug_year', 'generic_name', 'brand_name', 'manufacturer_name']) }}
         as mfr_report_key,
     *,
     current_timestamp as _loaded_at

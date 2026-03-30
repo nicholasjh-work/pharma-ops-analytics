@@ -38,7 +38,7 @@ fill_trends as (
 
 select
     {{ dbt_utils.generate_surrogate_key([
-        'drug_year', 'therapeutic_area', 'is_specialty_drug', 'brand_generic_flag'
+        'drug_year', 'therapeutic_area', 'is_gifthealth_focus', 'is_specialty_drug', 'brand_generic_flag'
     ]) }} as fill_trend_key,
     *,
     current_timestamp as _loaded_at

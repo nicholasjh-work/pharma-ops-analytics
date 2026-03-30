@@ -36,7 +36,7 @@ geo as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['drug_year', 'state', 'therapeutic_area']) }}
+    {{ dbt_utils.generate_surrogate_key(['drug_year', 'state', 'therapeutic_area', 'is_gifthealth_focus']) }}
         as geo_key,
     *,
     current_timestamp as _loaded_at

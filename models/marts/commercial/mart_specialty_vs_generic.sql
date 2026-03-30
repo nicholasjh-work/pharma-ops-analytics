@@ -42,7 +42,7 @@ ranked as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['drug_year', 'generic_name', 'brand_name']) }}
+    {{ dbt_utils.generate_surrogate_key(['drug_year', 'generic_name', 'brand_name', 'manufacturer_name']) }}
         as specialty_key,
     *,
     case

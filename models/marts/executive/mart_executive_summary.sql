@@ -63,7 +63,7 @@ combined as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['drug_year', 'therapeutic_area']) }}
+    {{ dbt_utils.generate_surrogate_key(['drug_year', 'therapeutic_area', 'is_gifthealth_focus']) }}
         as exec_summary_key,
     *,
     current_timestamp as _loaded_at
