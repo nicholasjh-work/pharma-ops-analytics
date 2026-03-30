@@ -1,0 +1,52 @@
+name: pharma_ops_analytics
+version: 1.0.0
+config-version: 2
+
+profile: pharma_ops
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+vars:
+  min_beneficiary_threshold: 11   # CMS suppression rule
+  specialty_cost_threshold: 830   # CMS specialty drug definition ($/month)
+  analysis_years: [2019, 2020, 2021, 2022, 2023]
+
+models:
+  pharma_ops_analytics:
+    staging:
+      +schema: staging
+      +materialized: view
+      +tags: ["staging"]
+    intermediate:
+      +schema: intermediate
+      +materialized: table
+      +tags: ["intermediate"]
+    marts:
+      +schema: marts
+      +materialized: table
+      +tags: ["marts"]
+      commercial:
+        +tags: ["commercial"]
+      customer_success:
+        +tags: ["customer_success"]
+      pharmacy_ops:
+        +tags: ["pharmacy_ops"]
+      enterprise:
+        +tags: ["enterprise"]
+      executive:
+        +tags: ["executive"]
+      data_quality:
+        +tags: ["data_quality"]
+
+seeds:
+  pharma_ops_analytics:
+    +schema: seeds

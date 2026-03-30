@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw CMS Medicare Part D public use files loaded by scripts/ingest.py"
+    schema: public
+    freshness:
+      warn_after: {count: 90, period: day}
+      error_after: {count: 180, period: day}
+    loaded_at_field: "null"  # CMS annual release, no loaded_at in source
+
+    tables:
+      - name: raw_part_d_spending
+        description: >
+          Medicare Part D spending by drug. One row per drug per year.
+          Source: data.cms.gov (DSD_PTD_RY25_P04_V10_DY23_BGM)
+        columns:
+          - name: brnd_name
+            description: "Brand name of the drug (if applicable)"
+          - name: gnrc_name
+            description: "Generic name of the drug"
+          - name: tot_spndng
+            description: "Total spending across all claims"
+          - name: tot_clms
+            description: "Total number of claims"
+          - name: tot_benes
+            description: "Total number of beneficiaries"
+
+      - name: raw_prescribers
+        description: >
+          Medicare Part D prescriber summary. One row per prescriber (NPI) per year.
+          Filtered to target specialties during ingestion.
+          Source: data.cms.gov (MUP_DPR_RY25_P04_V10_DY23_NPI)
+
+      - name: raw_prescribers_drug
+        description: >
+          Medicare Part D prescriber-by-drug detail. One row per prescriber per drug per year.
+          Filtered to target therapeutic areas during ingestion (~500K-1M rows from 25M+).
+          Source: data.cms.gov (MUP_DPR_RY25_P04_V10_DY23_NPIBN)
+
+  - name: seeds
+    description: "Reference data loaded via dbt seed"
+    schema: seeds
+    tables:
+      - name: seed_therapeutic_area_map
+        description: "Drug generic name to therapeutic area mapping"
+      - name: seed_state_region_map
+        description: "US state to census region mapping"

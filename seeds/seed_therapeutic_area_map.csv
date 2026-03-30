@@ -1,0 +1,74 @@
+generic_name,therapeutic_area,is_specialty,is_gifthealth_focus
+Adalimumab,Immunology,true,true
+Infliximab,Immunology,true,true
+Etanercept,Immunology,true,true
+Ustekinumab,Immunology,true,true
+Secukinumab,Immunology,true,true
+Vedolizumab,Gastroenterology,true,true
+Tofacitinib Citrate,Immunology,true,true
+Risankizumab-rzaa,Immunology,true,true
+Guselkumab,Immunology,true,true
+Dupilumab,Immunology,true,true
+Ozanimod Hydrochloride,Gastroenterology,true,true
+Semaglutide,Weight Management,true,true
+Tirzepatide,Weight Management,true,true
+Liraglutide,Weight Management,true,true
+Dulaglutide,Weight Management,false,true
+Exenatide,Weight Management,false,true
+Omeprazole,Gastroenterology,false,true
+Esomeprazole Magnesium,Gastroenterology,false,true
+Pantoprazole Sodium,Gastroenterology,false,true
+Lansoprazole,Gastroenterology,false,true
+Rabeprazole Sodium,Gastroenterology,false,true
+Mesalamine,Gastroenterology,false,true
+Budesonide,Gastroenterology,false,true
+Sulfasalazine,Gastroenterology,false,true
+Lactulose,Gastroenterology,false,true
+Lubiprostone,Gastroenterology,false,true
+Linaclotide,Gastroenterology,true,true
+Plecanatide,Gastroenterology,true,true
+Alosetron Hydrochloride,Gastroenterology,false,true
+Rifaximin,Gastroenterology,true,true
+Eluxadoline,Gastroenterology,true,true
+Tegaserod Maleate,Gastroenterology,true,true
+Ondansetron,Gastroenterology,false,true
+Metoclopramide Hcl,Gastroenterology,false,true
+Dicyclomine Hcl,Gastroenterology,false,true
+Hyoscyamine Sulfate,Gastroenterology,false,true
+Sucralfate,Gastroenterology,false,true
+Misoprostol,Gastroenterology,false,true
+Famotidine,Gastroenterology,false,true
+Metformin Hcl,Weight Management,false,false
+Insulin Glargine,Weight Management,true,false
+Insulin Lispro,Weight Management,true,false
+Insulin Aspart,Weight Management,true,false
+Empagliflozin,Weight Management,false,false
+Dapagliflozin,Weight Management,false,false
+Canagliflozin,Weight Management,false,false
+Sitagliptin Phosphate,Weight Management,false,false
+Lenalidomide,Oncology Oral,true,false
+Ibrutinib,Oncology Oral,true,false
+Palbociclib,Oncology Oral,true,false
+Enzalutamide,Oncology Oral,true,false
+Abiraterone Acetate,Oncology Oral,true,false
+Osimertinib Mesylate,Oncology Oral,true,false
+Ribociclib Succinate,Oncology Oral,true,false
+Imatinib Mesylate,Oncology Oral,true,false
+Dasatinib,Oncology Oral,true,false
+Ruxolitinib Phosphate,Oncology Oral,true,false
+Apixaban,Cardiovascular,false,false
+Rivaroxaban,Cardiovascular,false,false
+Eliquis,Cardiovascular,false,false
+Atorvastatin Calcium,Cardiovascular,false,false
+Rosuvastatin Calcium,Cardiovascular,false,false
+Amlodipine Besylate,Cardiovascular,false,false
+Lisinopril,Cardiovascular,false,false
+Losartan Potassium,Cardiovascular,false,false
+Metoprolol Succinate,Cardiovascular,false,false
+Levothyroxine Sodium,Endocrine,false,false
+Prednisone,Immunology,false,false
+Azathioprine,Immunology,false,false
+Mercaptopurine,Gastroenterology,false,true
+Methotrexate,Immunology,false,false
+Cyclosporine,Immunology,true,false
+Tacrolimus,Immunology,true,false

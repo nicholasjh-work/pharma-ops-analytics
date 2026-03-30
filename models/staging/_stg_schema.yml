@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: stg_drug_spending
+    description: "Cleaned CMS Part D drug spending data. One row per drug per year."
+    columns:
+      - name: generic_name
+        description: "Generic drug name (uppercased, trimmed)"
+        tests:
+          - not_null
+      - name: total_spending
+        description: "Total drug spending across all claims"
+        tests:
+          - not_null
+      - name: total_claims
+        description: "Total number of prescription claims"
+        tests:
+          - not_null
+      - name: total_beneficiaries
+        description: "Total unique beneficiaries"
+      - name: drug_year
+        description: "Data year"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2019, 2020, 2021, 2022, 2023]
+
+  - name: stg_prescribers
+    description: "Cleaned prescriber summary. One row per NPI per year."
+    columns:
+      - name: npi
+        description: "National Provider Identifier"
+        tests:
+          - not_null
+          - unique
+      - name: specialty
+        description: "Prescriber specialty/type"
+        tests:
+          - not_null
+      - name: state
+        description: "Prescriber state abbreviation"
+      - name: total_claims
+        description: "Total prescription claims by this prescriber"
+        tests:
+          - not_null
+
+  - name: stg_prescriber_drugs
+    description: "Prescriber-drug detail. One row per prescriber per drug per year."
+    columns:
+      - name: npi
+        description: "National Provider Identifier"
+        tests:
+          - not_null
+      - name: generic_name
+        description: "Generic drug name"
+        tests:
+          - not_null
+      - name: total_claims
+        description: "Claims for this prescriber-drug combination"
+        tests:
+          - not_null

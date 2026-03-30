@@ -1,0 +1,170 @@
+version: 2
+
+models:
+  # ── Commercial ──────────────────────────────────────────────
+  - name: mart_drug_spending_trends
+    description: "Drug spending trends by therapeutic area. Grain: therapeutic_area + drug_year."
+    meta:
+      bu: Commercial
+      owner: Data & Analytics
+      kpi: Total Spending, YoY Change, Specialty %
+    columns:
+      - name: spending_trend_key
+        tests: [unique, not_null]
+      - name: total_spending
+        tests: [not_null]
+
+  - name: mart_therapeutic_area_mix
+    description: "Market size and brand/generic mix by therapeutic area."
+    meta:
+      bu: Commercial
+      owner: Data & Analytics
+    columns:
+      - name: ta_mix_key
+        tests: [unique, not_null]
+
+  - name: mart_specialty_vs_generic
+    description: "Pareto analysis of drug spending. Identifies top-spending drugs and cumulative concentration."
+    meta:
+      bu: Commercial
+      owner: Data & Analytics
+    columns:
+      - name: specialty_key
+        tests: [unique, not_null]
+      - name: spending_rank
+        tests: [not_null]
+
+  # ── Customer Success ────────────────────────────────────────
+  - name: mart_prescriber_engagement
+    description: "Prescriber engagement tiers, brand rates, and risk flags."
+    meta:
+      bu: Customer Success
+      owner: Data & Analytics
+      kpi: Engagement Tier, Brand Prescribing Rate
+    columns:
+      - name: prescriber_key
+        tests: [unique, not_null]
+      - name: npi
+        tests: [not_null]
+
+  - name: mart_specialty_adoption_funnel
+    description: "Specialty drug adoption rates by prescriber specialty and therapeutic area."
+    meta:
+      bu: Customer Success
+      owner: Data & Analytics
+    columns:
+      - name: adoption_key
+        tests: [unique, not_null]
+
+  - name: mart_prescriber_retention_cohort
+    description: "Prescriber volume cohorts by specialty, region, and engagement tier."
+    meta:
+      bu: Customer Success
+      owner: Data & Analytics
+    columns:
+      - name: cohort_key
+        tests: [unique, not_null]
+
+  # ── Pharmacy Operations ─────────────────────────────────────
+  - name: mart_fill_volume_trends
+    description: "Prescription fill volume and 30-day fill adherence proxy."
+    meta:
+      bu: Pharmacy Operations
+      owner: Data & Analytics
+      kpi: Total Claims, Fills Per Beneficiary
+    columns:
+      - name: fill_trend_key
+        tests: [unique, not_null]
+
+  - name: mart_cost_per_claim
+    description: "Cost per claim by drug with specialty threshold flag. Excludes suppressed cells."
+    meta:
+      bu: Pharmacy Operations
+      owner: Data & Analytics
+      kpi: Cost Per Claim, Cost Per Beneficiary/Month
+      exclusions: "<11 beneficiaries suppressed per CMS policy"
+    columns:
+      - name: cost_claim_key
+        tests: [unique, not_null]
+      - name: cost_per_claim
+        tests: [not_null]
+
+  - name: mart_day_supply_efficiency
+    description: "Day supply per claim and cost per day of therapy by drug and state."
+    meta:
+      bu: Pharmacy Operations
+      owner: Data & Analytics
+    columns:
+      - name: day_supply_key
+        tests: [unique, not_null]
+
+  - name: mart_brand_generic_ratio
+    description: "Brand vs generic dispensing ratio by therapeutic area and state."
+    meta:
+      bu: Pharmacy Operations
+      owner: Data & Analytics
+      kpi: Generic Dispensing Rate
+    columns:
+      - name: brand_generic_key
+        tests: [unique, not_null]
+
+  # ── Enterprise Customers ────────────────────────────────────
+  - name: mart_manufacturer_performance_report
+    description: "Per-drug performance report with therapeutic area market share. Simulates partner reporting."
+    meta:
+      bu: Enterprise Customers
+      owner: Data & Analytics
+      kpi: Market Share (Spending), Market Share (Claims)
+    columns:
+      - name: mfr_report_key
+        tests: [unique, not_null]
+
+  - name: mart_therapeutic_area_kpis
+    description: "Summary KPIs per therapeutic area for enterprise partner reporting."
+    meta:
+      bu: Enterprise Customers
+      owner: Data & Analytics
+    columns:
+      - name: ta_kpi_key
+        tests: [unique, not_null]
+
+  - name: mart_geographic_distribution
+    description: "Prescribing volume and cost by state and therapeutic area."
+    meta:
+      bu: Enterprise Customers
+      owner: Data & Analytics
+    columns:
+      - name: geo_key
+        tests: [unique, not_null]
+
+  # ── Executive ───────────────────────────────────────────────
+  - name: mart_kpi_scorecard
+    description: "Top-level executive scorecard. One row per year."
+    meta:
+      bu: Executive
+      owner: Data & Analytics
+    columns:
+      - name: drug_year
+        tests: [unique, not_null]
+
+  - name: mart_executive_summary
+    description: "Executive summary combining spending and prescriber metrics by therapeutic area."
+    meta:
+      bu: Executive
+      owner: Data & Analytics
+    columns:
+      - name: exec_summary_key
+        tests: [unique, not_null]
+
+  # ── Data Quality ────────────────────────────────────────────
+  - name: mart_dq_completeness
+    description: "Data completeness scorecard per source table and column."
+    meta:
+      bu: Data Quality
+      owner: Data & Analytics
+
+  - name: mart_dq_anomalies
+    description: "Statistical outliers in drug spending (z-score > 2)."
+    meta:
+      bu: Data Quality
+      owner: Data & Analytics

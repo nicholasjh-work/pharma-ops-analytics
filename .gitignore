@@ -1,0 +1,31 @@
+# Data files (too large for git)
+data/raw/*.csv
+data/processed/*.csv
+data/raw/*.zip
+*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# dbt
+target/
+dbt_packages/
+logs/
+dbt_modules/
+
+# Node / Dashboard
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.next/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

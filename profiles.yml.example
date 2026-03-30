@@ -1,0 +1,37 @@
+# Copy to ~/.dbt/profiles.yml and fill in credentials.
+# Two targets provided: local PostgreSQL and Snowflake.
+
+pharma_ops:
+  target: dev_postgres
+
+  outputs:
+    dev_postgres:
+      type: postgres
+      host: "{{ env_var('PG_HOST', 'localhost') }}"
+      port: 5432
+      user: "{{ env_var('PG_USER', 'demo_user') }}"
+      pass: "{{ env_var('PG_PASSWORD', '') }}"
+      dbname: pharma_ops
+      schema: public
+      threads: 4
+
+    dev_supabase:
+      type: postgres
+      host: "{{ env_var('SUPABASE_HOST') }}"
+      port: 5432
+      user: "{{ env_var('SUPABASE_USER', 'postgres') }}"
+      pass: "{{ env_var('SUPABASE_PASSWORD') }}"
+      dbname: postgres
+      schema: public
+      threads: 4
+
+    prod_snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: ANALYST
+      database: PHARMA_OPS
+      warehouse: COMPUTE_WH
+      schema: public
+      threads: 8
