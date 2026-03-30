@@ -1,0 +1,15 @@
+{
+  "name": "pharma-ops-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "evidence dev",
+    "build": "evidence build",
+    "preview": "evidence preview",
+    "sources": "evidence sources"
+  },
+  "dependencies": {
+    "@evidence-dev/evidence": "latest",
+    "@evidence-dev/postgres": "latest"
+  }
+}

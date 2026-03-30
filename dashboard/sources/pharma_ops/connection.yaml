@@ -1,0 +1,7 @@
+name: pharma_ops
+type: postgres
+options:
+  host: ${PG_HOST}
+  port: 5432
+  database: ${PG_DATABASE}
+  ssl: false
