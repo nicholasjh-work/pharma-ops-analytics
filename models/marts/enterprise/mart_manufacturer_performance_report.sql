@@ -48,9 +48,6 @@ manufacturer_report as (
             d.total_claims::numeric / nullif(t.ta_total_claims, 0) * 100, 2
         ) as ta_claims_share_pct,
 
-        -- YoY
-        d.yoy_change_avg_cost_per_claim,
-
         t.ta_total_spending,
         t.ta_total_claims
 

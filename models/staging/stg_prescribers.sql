@@ -15,7 +15,6 @@ renamed as (
         trim(coalesce(prscrbr_first_name, ''))          as first_name,
         trim(coalesce(prscrbr_crdntls, ''))             as credentials,
         trim(prscrbr_ent_cd)                            as entity_code,
-        -- Entity: I = Individual, O = Organization
 
         -- Provider demographics
         trim(prscrbr_type)                              as specialty,
@@ -28,15 +27,15 @@ renamed as (
         cast(tot_drug_cst as numeric(18,2))             as total_drug_cost,
         cast(tot_30day_fills as numeric(12,2))          as total_30day_fills,
 
-        -- Brand vs generic
+        -- Brand vs generic (actual CMS column names: brnd_tot_drug_cst, gnrc_tot_drug_cst)
         cast(brnd_tot_clms as bigint)                   as brand_claims,
         cast(gnrc_tot_clms as bigint)                   as generic_claims,
-        cast(brnd_drug_cst as numeric(18,2))            as brand_drug_cost,
-        cast(gnrc_drug_cst as numeric(18,2))            as generic_drug_cost,
+        cast(brnd_tot_drug_cst as numeric(18,2))        as brand_drug_cost,
+        cast(gnrc_tot_drug_cst as numeric(18,2))        as generic_drug_cost,
 
         -- Risk indicators
         cast(opioid_tot_clms as bigint)                 as opioid_claims,
-        cast(opioid_bene_cnt as integer)                as opioid_beneficiaries,
+        cast(opioid_tot_benes as integer)               as opioid_beneficiaries,
         cast(antbtc_tot_clms as bigint)                 as antibiotic_claims,
 
         -- Beneficiary demographics

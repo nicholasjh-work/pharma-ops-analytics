@@ -42,11 +42,7 @@ cost_metrics as (
             when cost_per_beneficiary_monthly > {{ var('specialty_cost_threshold') }}
             then true
             else false
-        end as exceeds_specialty_threshold,
-
-        -- YoY fields from source
-        yoy_change_avg_cost_per_claim,
-        avg_cost_per_claim_prior_year
+        end as exceeds_specialty_threshold
 
     from drug_data
 )

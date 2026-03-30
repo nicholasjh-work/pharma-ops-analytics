@@ -53,7 +53,6 @@ scorecard as (
 )
 
 select
-    drug_year,
     *,
     current_timestamp as _loaded_at
 from scorecard
