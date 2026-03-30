@@ -27,6 +27,7 @@ manufacturer_report as (
         d.drug_year,
         d.brand_name,
         d.generic_name,
+        d.manufacturer_name,
         coalesce(d.therapeutic_area, 'Other') as therapeutic_area,
         d.is_gifthealth_focus,
         d.is_specialty_drug,

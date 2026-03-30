@@ -14,6 +14,7 @@ ranked as (
         drug_year,
         brand_name,
         generic_name,
+        manufacturer_name,
         coalesce(therapeutic_area, 'Other') as therapeutic_area,
         is_specialty_drug,
         brand_generic_flag,

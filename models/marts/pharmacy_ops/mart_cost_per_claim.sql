@@ -17,6 +17,7 @@ cost_metrics as (
         brand_name,
         generic_name,
         coalesce(therapeutic_area, 'Other') as therapeutic_area,
+        manufacturer_name,
         is_gifthealth_focus,
         is_specialty_drug,
         brand_generic_flag,
