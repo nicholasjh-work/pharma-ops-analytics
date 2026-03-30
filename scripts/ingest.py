@@ -45,6 +45,7 @@ CMS_DATASETS = {
     "part_d_spending_2023": {
         "url": (
             "https://data.cms.gov/sites/default/files/2025-05/"
+            "56d95a8b-138c-4b60-84a5-613fbab7197f/"
             "DSD_PTD_RY25_P04_V10_DY23_BGM.csv"
         ),
         "filename": "part_d_spending_2023.csv",
@@ -53,7 +54,8 @@ CMS_DATASETS = {
     },
     "prescribers_summary_2023": {
         "url": (
-            "https://data.cms.gov/sites/default/files/2025-05/"
+            "https://data.cms.gov/sites/default/files/2025-04/"
+            "750769a3-bb0f-4f05-81dc-7dcb6e105cb0/"
             "MUP_DPR_RY25_P04_V10_DY23_NPI.csv"
         ),
         "filename": "prescribers_summary_2023.csv",
@@ -62,7 +64,8 @@ CMS_DATASETS = {
     },
     "prescribers_by_drug_2023": {
         "url": (
-            "https://data.cms.gov/sites/default/files/2025-05/"
+            "https://data.cms.gov/sites/default/files/2025-04/"
+            "0d5915ce-002c-4d87-bde8-24ffb08bb6cc/"
             "MUP_DPR_RY25_P04_V10_DY23_NPIBN.csv"
         ),
         "filename": "prescribers_by_drug_2023.csv",
