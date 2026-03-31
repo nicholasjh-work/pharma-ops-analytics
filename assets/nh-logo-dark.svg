@@ -55,7 +55,7 @@
   <rect x="80" y="72" width="220" height="216" rx="30" fill="#121B2B"/>
   <rect x="81" y="73" width="218" height="214" rx="29" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="2"/>
 
-  <!-- H1 logo -->
+  <!-- H logo -->
   <g transform="translate(110 100) scale(1.35)">
     <rect x="18" y="18" width="84" height="84" rx="18" fill="url(#logoOuter)"/>
     <rect x="23" y="23" width="74" height="74" rx="14" stroke="url(#logoEdge)" stroke-width="1.4"/>
