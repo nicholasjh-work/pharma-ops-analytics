@@ -1,9 +1,5 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/nh-logo-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="assets/nh-logo-light.svg">
-    <img alt="Pharmacy Operations Analytics Platform Banner" src="assets/nh-logo-light.svg" width="100%">
-  </picture>
+  <img src="assets/nh-banner-dark.svg" alt="Pharmacy Operations Analytics Platform Banner" width="100%">
 </p>
 
 <h1 align="center">Pharmacy Operations Analytics Platform</h1>
