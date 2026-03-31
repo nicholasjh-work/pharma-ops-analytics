@@ -1,0 +1,29 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="h1_outer" x1="18" y1="14" x2="102" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDFEFF"/>
+      <stop offset="0.22" stop-color="#DCE4EE"/>
+      <stop offset="0.52" stop-color="#8B98A9"/>
+      <stop offset="0.78" stop-color="#435061"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="h1_cut" x1="24" y1="22" x2="98" y2="98" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08101B"/>
+      <stop offset="1" stop-color="#1F2937"/>
+    </linearGradient>
+    <linearGradient id="h1_edge" x1="18" y1="18" x2="80" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="18" y="18" width="84" height="84" rx="18" fill="url(#h1_outer)"/>
+  <rect x="23" y="23" width="74" height="74" rx="14" stroke="url(#h1_edge)" stroke-width="1.4"/>
+
+  <rect x="32" y="28" width="14" height="64" rx="6" fill="url(#h1_cut)"/>
+  <rect x="74" y="28" width="14" height="64" rx="6" fill="url(#h1_cut)"/>
+  <rect x="46" y="50" width="28" height="12" rx="5" fill="url(#h1_cut)"/>
+
+  <path d="M26 26H94" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1"/>
+  <path d="M26 26V94" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="1"/>
+</svg>
