@@ -1,19 +1,26 @@
 <p align="center">
-  <img src="assets/nh-banner-dark.svg" alt="Pharmacy Operations Analytics Platform Banner" width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/nh-banner-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/nh-banner-light.png">
+    <img src="assets/nh-banner-dark.png" alt="Pharmacy Operations Analytics Platform Banner" width="100%">
+  </picture>
 </p>
 
 <h1 align="center">Pharmacy Operations Analytics Platform</h1>
 
 <p align="center">
-  <b>Real CMS Medicare Part D data powering a pharmacy operations analytics stack with dbt, PostgreSQL, and React</b>
-</p>
-<p align="center">
-  <b>Real CMS Medicare Part D data powering a pharmacy operations analytics stack with dbt, PostgreSQL, and React</b>
+    <b>Real CMS Medicare Part D data powering a pharmacy operations analytics stack with dbt, PostgreSQL, and React</b>
 </p>
 
 <p align="center">
-  <a href="https://pharma-ops.nicholashidalgo.com"><img src="https://img.shields.io/badge/Demo-Live_Dashboard-0F766E?style=for-the-badge" alt="Demo"></a>&nbsp;
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-1E40AF?style=for-the-badge" alt="License"></a>
+    <a href="https://pharma-ops.nicholashidalgo.com"><img src="https://img.shields.io/badge/Demo-Live_Dashboard-0F766E?style=for-the-badge" alt="Demo"></a>&nbsp;
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-1E40AF?style=for-the-badge" alt="License"></a>
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=flat&logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/dbt-Core-FF694B?style=flat&logo=dbt&logoColor=white" alt="dbt">
+    <!-- add remaining tech badges here -->
 </p>
 
 <p align="center">
