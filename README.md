@@ -7,6 +7,9 @@
 <p align="center">
   <b>Real CMS Medicare Part D data powering a pharmacy operations analytics stack with dbt, PostgreSQL, and React</b>
 </p>
+<p align="center">
+  <b>Real CMS Medicare Part D data powering a pharmacy operations analytics stack with dbt, PostgreSQL, and React</b>
+</p>
 
 <p align="center">
   <a href="https://pharma-ops.nicholashidalgo.com"><img src="https://img.shields.io/badge/Demo-Live_Dashboard-0F766E?style=for-the-badge" alt="Demo"></a>&nbsp;
