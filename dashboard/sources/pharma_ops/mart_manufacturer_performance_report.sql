@@ -1,0 +1,1 @@
+select * from public_marts.mart_manufacturer_performance_report

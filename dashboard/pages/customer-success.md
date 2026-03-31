@@ -10,7 +10,7 @@ select
   round(avg(total_claims)) as avg_claims,
   round(avg(brand_prescribing_rate_pct), 1) as avg_brand_rate,
   round(avg(total_drug_cost), 2) as avg_drug_cost
-from public_marts.mart_prescriber_engagement
+from pharma_ops.mart_prescriber_engagement
 group by specialty, engagement_tier
 order by specialty, engagement_tier
 ```
@@ -19,7 +19,7 @@ order by specialty, engagement_tier
 select
   engagement_tier,
   count(*) as prescriber_count
-from public_marts.mart_prescriber_engagement
+from pharma_ops.mart_prescriber_engagement
 group by engagement_tier
 ```
 
@@ -29,19 +29,19 @@ select
   count(*) as prescriber_count,
   sum(total_claims) as total_claims,
   round(avg(brand_prescribing_rate_pct), 1) as avg_brand_rate
-from public_marts.mart_prescriber_engagement
+from pharma_ops.mart_prescriber_engagement
 group by specialty
 order by total_claims desc
 ```
 
 ```sql adoption
-select * from public_marts.mart_specialty_adoption_funnel
+select * from pharma_ops.mart_specialty_adoption_funnel
 where is_gifthealth_focus = true
 order by specialty_claims desc
 ```
 
 ```sql cohorts
-select * from public_marts.mart_prescriber_retention_cohort
+select * from pharma_ops.mart_prescriber_retention_cohort
 order by specialty, engagement_tier
 ```
 

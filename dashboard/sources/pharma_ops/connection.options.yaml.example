@@ -1,5 +1,0 @@
-# Copy this to connection.options.yaml and fill in your credentials.
-# This file contains sensitive values and should NOT be committed to git.
-# Base64 encode values for production use.
-user: nickhidalgo
-password: ""

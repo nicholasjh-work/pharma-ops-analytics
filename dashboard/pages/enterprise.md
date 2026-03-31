@@ -3,7 +3,7 @@
 Manufacturer performance reporting, therapeutic area KPIs, and geographic distribution. Simulates the partner reporting Gifthealth delivers to pharmaceutical manufacturers.
 
 ```sql ta_kpis
-select * from public_marts.mart_therapeutic_area_kpis
+select * from pharma_ops.mart_therapeutic_area_kpis
 where drug_year = 2023
 order by total_spending desc
 ```
@@ -15,7 +15,7 @@ select
   sum(total_drug_cost) as total_drug_cost,
   sum(prescriber_count) as prescriber_count,
   round(sum(total_drug_cost) / nullif(sum(total_claims), 0), 2) as avg_cost_per_claim
-from public_marts.mart_geographic_distribution
+from pharma_ops.mart_geographic_distribution
 where is_gifthealth_focus = true
 group by state
 order by total_drug_cost desc
@@ -34,7 +34,7 @@ select
   cost_per_beneficiary_monthly,
   ta_spending_share_pct,
   ta_claims_share_pct
-from public_marts.mart_manufacturer_performance_report
+from pharma_ops.mart_manufacturer_performance_report
 where drug_year = 2023
   and is_gifthealth_focus = true
 order by total_spending desc

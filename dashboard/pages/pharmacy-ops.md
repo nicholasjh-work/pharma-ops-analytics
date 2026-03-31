@@ -3,7 +3,7 @@
 Cost per claim, fill volumes, day supply efficiency, and brand/generic dispensing ratios.
 
 ```sql fill_trends
-select * from public_marts.mart_fill_volume_trends
+select * from pharma_ops.mart_fill_volume_trends
 where is_gifthealth_focus = true
 order by drug_year, therapeutic_area
 ```
@@ -17,7 +17,7 @@ select
   round(avg(cost_per_beneficiary_monthly), 2) as avg_monthly_cost,
   sum(total_claims) as total_claims,
   sum(total_spending) as total_spending
-from public_marts.mart_cost_per_claim
+from pharma_ops.mart_cost_per_claim
 where therapeutic_area != 'Other'
 group by therapeutic_area, drug_year
 order by drug_year, therapeutic_area
@@ -29,14 +29,14 @@ select
   round(avg(avg_day_supply_per_claim), 1) as avg_day_supply,
   round(avg(cost_per_day_of_therapy), 2) as avg_cost_per_day,
   sum(total_claims) as total_claims
-from public_marts.mart_day_supply_efficiency
+from pharma_ops.mart_day_supply_efficiency
 where therapeutic_area != 'Other'
 group by therapeutic_area
 order by avg_cost_per_day desc
 ```
 
 ```sql brand_generic
-select * from public_marts.mart_brand_generic_ratio
+select * from pharma_ops.mart_brand_generic_ratio
 where is_gifthealth_focus = true
 order by therapeutic_area, state
 ```
@@ -47,7 +47,7 @@ select
   sum(total_claims) as total_claims,
   round(sum(generic_claims)::numeric / nullif(sum(total_claims), 0) * 100, 1) as generic_rate,
   round(sum(brand_claims)::numeric / nullif(sum(total_claims), 0) * 100, 1) as brand_rate
-from public_marts.mart_brand_generic_ratio
+from pharma_ops.mart_brand_generic_ratio
 where is_gifthealth_focus = true
 group by therapeutic_area
 order by generic_rate desc

@@ -3,12 +3,12 @@
 Completeness monitoring, anomaly detection, and KPI governance for the analytics platform.
 
 ```sql completeness
-select * from public_marts.mart_dq_completeness
+select * from pharma_ops.mart_dq_completeness
 order by source_model, column_name
 ```
 
 ```sql anomalies
-select * from public_marts.mart_dq_anomalies
+select * from pharma_ops.mart_dq_anomalies
 order by abs(cost_per_claim_zscore) desc
 ```
 
@@ -17,7 +17,7 @@ select
   anomaly_status,
   count(*) as drug_count,
   round(avg(abs(cost_per_claim_zscore)), 2) as avg_zscore
-from public_marts.mart_dq_anomalies
+from pharma_ops.mart_dq_anomalies
 group by anomaly_status
 ```
 

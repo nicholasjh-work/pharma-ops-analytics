@@ -1,7 +1,8 @@
 name: pharma_ops
 type: postgres
 options:
-  host: ${PG_HOST}
+  host: localhost
   port: 5432
-  database: ${PG_DATABASE}
+  database: pharma_ops
   ssl: false
+  schema: public_marts

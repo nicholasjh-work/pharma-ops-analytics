@@ -3,22 +3,22 @@
 Real CMS Medicare Part D data powering pharmacy operations analytics across four business units.
 
 ```sql kpi_scorecard
-select * from public_marts.mart_kpi_scorecard
+select * from pharma_ops.mart_kpi_scorecard
 order by drug_year
 ```
 
 ```sql executive_summary
-select * from public_marts.mart_executive_summary
+select * from pharma_ops.mart_executive_summary
 order by drug_year, total_spending desc
 ```
 
 ```sql spending_trends
-select * from public_marts.mart_drug_spending_trends
+select * from pharma_ops.mart_drug_spending_trends
 order by drug_year, therapeutic_area
 ```
 
 ```sql anomalies
-select * from public_marts.mart_dq_anomalies
+select * from pharma_ops.mart_dq_anomalies
 where anomaly_status = 'Anomaly'
 order by abs(cost_per_claim_zscore) desc
 limit 20

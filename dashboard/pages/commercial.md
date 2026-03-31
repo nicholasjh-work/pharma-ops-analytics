@@ -3,17 +3,17 @@
 Drug spending trends, therapeutic area market sizing, and specialty drug concentration.
 
 ```sql spending_trends
-select * from public_marts.mart_drug_spending_trends
+select * from pharma_ops.mart_drug_spending_trends
 order by drug_year, therapeutic_area
 ```
 
 ```sql ta_mix
-select * from public_marts.mart_therapeutic_area_mix
+select * from pharma_ops.mart_therapeutic_area_mix
 order by drug_year, total_spending desc
 ```
 
 ```sql specialty
-select * from public_marts.mart_specialty_vs_generic
+select * from pharma_ops.mart_specialty_vs_generic
 where drug_year = 2023
 order by spending_rank
 limit 50
@@ -30,7 +30,7 @@ select
   cost_per_claim,
   cost_per_beneficiary_monthly,
   is_specialty_drug
-from public_marts.mart_cost_per_claim
+from pharma_ops.mart_cost_per_claim
 where drug_year = 2023
 order by total_spending desc
 limit 25
