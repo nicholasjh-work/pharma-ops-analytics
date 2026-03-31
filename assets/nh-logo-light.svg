@@ -1,0 +1,30 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="h2_outer" x1="18" y1="14" x2="102" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FCFEFF"/>
+      <stop offset="0.20" stop-color="#D7E0EA"/>
+      <stop offset="0.46" stop-color="#8E9CAD"/>
+      <stop offset="0.76" stop-color="#435062"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="h2_spine" x1="58" y1="30" x2="62" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.45" stop-color="#C3CDD9"/>
+      <stop offset="1" stop-color="#273241"/>
+    </linearGradient>
+    <linearGradient id="h2_cut" x1="24" y1="24" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07101A"/>
+      <stop offset="1" stop-color="#1D2735"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="18" y="18" width="84" height="84" rx="18" fill="url(#h2_outer)"/>
+  <rect x="34" y="28" width="12" height="64" rx="5" fill="url(#h2_cut)"/>
+  <rect x="74" y="28" width="12" height="64" rx="5" fill="url(#h2_cut)"/>
+  <rect x="46" y="50" width="28" height="12" rx="5" fill="url(#h2_cut)"/>
+
+  <rect x="54" y="32" width="12" height="56" rx="5" fill="url(#h2_spine)" fill-opacity="0.95"/>
+
+  <rect x="50" y="24" width="20" height="7" rx="3.5" fill="#E2E8F0" fill-opacity="0.38"/>
+  <rect x="50" y="89" width="20" height="7" rx="3.5" fill="#CBD5E1" fill-opacity="0.26"/>
+</svg>
